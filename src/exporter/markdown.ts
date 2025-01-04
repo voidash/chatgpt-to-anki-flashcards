@@ -63,6 +63,18 @@ export async function exportAllToMarkdown(fileNameFormat: string, apiConversatio
     return true
 }
 
+export async function exportToSingleMarkdown(apiConversations: ApiConversationWithId[], metaList?: ExportMeta[]) {
+    const conversations = apiConversations.map(x => processConversation(x))
+    let finalContent : string = "";
+    conversations.forEach((conversation) => {
+        const content = conversationToMarkdown(conversation, metaList);
+        finalContent += content;
+    })
+
+    downloadFile('chatgpt-export-markdown.md', 'application/zip', finalContent)
+    return true
+}
+
 const LatexRegex = /(\s\$\$.+\$\$\s|\s\$.+\$\s|\\\[.+\\\]|\\\(.+\\\))|(^\$$[\S\s]+^\$$)|(^\$\$[\S\s]+^\$\$$)/gm
 
 function conversationToMarkdown(conversation: ConversationResult, metaList?: ExportMeta[]) {

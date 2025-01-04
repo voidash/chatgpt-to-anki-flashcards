@@ -18,6 +18,7 @@ import { SettingDialog } from './SettingDialog'
 
 import '../style.css'
 import './Dialog.css'
+import { AnkiDialog } from './AnkiDialog'
 
 function MenuInner({ container }: { container: HTMLDivElement }) {
     const { t } = useTranslation()
@@ -26,6 +27,7 @@ function MenuInner({ container }: { container: HTMLDivElement }) {
     const [open, setOpen] = useState(false)
     const [jsonOpen, setJsonOpen] = useState(false)
     const [exportOpen, setExportOpen] = useState(false)
+    const [ankiOpen, setAnkiOpen] = useState(false)
     const [settingOpen, setSettingOpen] = useState(false)
 
     const {
@@ -102,7 +104,7 @@ function MenuInner({ container }: { container: HTMLDivElement }) {
                 </HoverCard.Trigger>
                 <Portal
                     container={isMobile ? container : document.body}
-                    forceMount={open || jsonOpen || settingOpen || exportOpen}
+                    forceMount={open || jsonOpen || settingOpen || exportOpen || ankiOpen}
                 >
                     <HoverCard.Content
                         className={`
@@ -129,7 +131,7 @@ function MenuInner({ container }: { container: HTMLDivElement }) {
                             onOpenChange={setSettingOpen}
                         >
                             <div className="row-full">
-                                <MenuItem text={t('Setting')} icon={IconSetting} />
+                                <MenuItem text={t('Settings')} icon={IconSetting} />
                             </div>
                         </SettingDialog>
 
@@ -207,6 +209,19 @@ function MenuInner({ container }: { container: HTMLDivElement }) {
                                 />
                             </div>
                         </ExportDialog>
+
+                        <AnkiDialog
+                            format={format}
+                            open={ankiOpen}
+                            onOpenChange={setAnkiOpen}
+                        >
+                            <div className="row-full">
+                                <MenuItem
+                                    text={t('Anki Export')}
+                                    icon={IconZip}
+                                />
+                            </div>
+                        </AnkiDialog>
 
                         {!isMobile && (
                             <HoverCard.Arrow
